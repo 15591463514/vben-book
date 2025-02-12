@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model admin_user {
+  avatar   String @db.VarChar(255)
+  id       Int    @id @default(autoincrement())
+  username String @unique(map: "IDX_4d0392574f49340bb75a102b04") @db.VarChar(255)
+  password String @db.VarChar(255)
+  role     String @db.VarChar(255)
+  nickname String @db.VarChar(255)
+  active   Int
+}
+
+model auth {
+  id     Int     @id @default(autoincrement())
+  key    String  @unique(map: "key") @db.VarChar(50)
+  name   String  @db.VarChar(100)
+  remark String? @db.VarChar(255)
+}
+
+model book {
+  id           Int     @id @default(autoincrement())
+  fileName     String  @unique(map: "fileName") @db.VarChar(255)
+  cover        String? @db.VarChar(1024)
+  title        String  @db.VarChar(1024)
+  author       String? @db.VarChar(1024)
+  publisher    String? @db.VarChar(255)
+  bookId       String? @db.VarChar(255)
+  category     Int?
+  categoryText String? @db.VarChar(255)
+  language     String? @db.VarChar(10)
+  rootFile     String? @db.VarChar(255)
+  originalName String? @db.VarChar(255)
+  filePath     String? @db.VarChar(255)
+  unzipPath    String? @db.VarChar(255)
+  coverPath    String? @db.VarChar(255)
+  createUser   String? @db.VarChar(50)
+  createDt     BigInt?
+  updateDt     BigInt?
+  updateType   Int?
+
+  @@index([category], map: "category")
+  @@index([fileName, category], map: "fileName+category")
+}
+
+model contents {
+  fileName String  @db.VarChar(100)
+  id       String? @db.VarChar(100)
+  href     String? @db.VarChar(255)
+  order    Int?
+  level    Int?
+  text     String? @db.VarChar(500)
+  label    String? @db.VarChar(255)
+  pid      String? @db.VarChar(255)
+  navId    String  @db.VarChar(100)
+
+  @@id([fileName, navId])
+}
+
+model menu {
+  id       Int    @id @default(autoincrement())
+  path     String @db.VarChar(255)
+  name     String @unique(map: "IDX_51b63874cdce0d6898a0b2150f") @db.VarChar(255)
+  redirect String @db.VarChar(255)
+  meta     String @db.VarChar(255)
+  pid      Int
+  active   Int    @default(1)
+}
+
+model role {
+  id     Int     @id @default(autoincrement())
+  name   String  @unique(map: "roleName") @db.VarChar(255)
+  remark String? @db.VarChar(255)
+}
+
+model role_auth {
+  roleId Int
+  authId Int
+
+  @@id([roleId, authId])
+}
+
+model role_menu {
+  roleId Int
+  menuId Int
+
+  @@id([roleId, menuId])
+}
