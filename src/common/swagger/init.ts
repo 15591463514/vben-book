@@ -9,5 +9,7 @@ export function initSwagger(app: INestApplication) {
     .addTag('nest')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  SwaggerModule.setup('api', app, documentFactory, {
+    jsonDocumentUrl: '/api-json',
+  });
 }
