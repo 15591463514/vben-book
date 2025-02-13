@@ -17,10 +17,10 @@ export class UserService {
     return this.prisma.admin_user.findMany();
   }
 
-  findOne(id: number) {
+  findOne(username: string) {
     return this.prisma.admin_user.findUnique({
       where: {
-        id,
+        username,
       },
     });
   }

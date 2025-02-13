@@ -20,6 +20,7 @@ export class UserController {
   @ApiOperation({ summary: '创建用户' })
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
+    console.log(createUserDto);
     return this.userService.create(createUserDto);
   }
 
@@ -33,9 +34,9 @@ export class UserController {
   @ApiResponse({
     type: User,
   })
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Get(':username')
+  findOne(@Param('username') username: string) {
+    return this.userService.findOne(username);
   }
 
   @ApiOperation({ summary: '更新用户' })
