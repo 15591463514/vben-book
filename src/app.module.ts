@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { PrismaModule } from './prisma/prisma.module';
-import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
+import { PrismaModule } from './modules/prisma/prisma.module';
+import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { BookModule } from './modules/book/book.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TransformInterceptor } from './common/interceptors';
 
 @Module({
-  imports: [PrismaModule, UserModule, AuthModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [PrismaModule, UserModule, AuthModule, BookModule],
+  providers: [{ provide: APP_INTERCEPTOR, useClass: TransformInterceptor }],
 })
 export class AppModule {}

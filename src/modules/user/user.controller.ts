@@ -10,8 +10,9 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
+import { ApiResult } from '../../common/decorators';
 
 @Controller('user')
 export class UserController {
@@ -25,15 +26,14 @@ export class UserController {
   }
 
   @ApiOperation({ summary: '获取所有用户' })
+  @ApiResult({ type: [User], isPage: true })
   @Get()
   findAll() {
     return this.userService.findAll();
   }
 
   @ApiOperation({ summary: '获取单个用户' })
-  @ApiResponse({
-    type: User,
-  })
+  @ApiResult({ type: User })
   @Get(':username')
   findOne(@Param('username') username: string) {
     return this.userService.findOne(username);
